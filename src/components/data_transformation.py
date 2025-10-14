@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 
 from src.exception import CustomException
 from src.logger import logging
@@ -66,11 +66,13 @@ class DataTransformation:
             preprocessing_obj = self.get_data_tranformer_object()
             target_column_name = "placement"
 
+            label_encoder = LabelEncoder()
+
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
-            target_feature_train_df = train_df[target_column_name]
+            target_feature_train_df = label_encoder.fit_transform(train_df[target_column_name])
 
             input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
-            target_feature_test_df = test_df[target_column_name]
+            target_feature_test_df = label_encoder.fit_transform(test_df[target_column_name])
 
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe"
