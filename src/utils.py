@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.model_selection import GridSearchCV
 from src.exception import CustomException
 from src.exception import CustomException
 import dill
@@ -17,15 +18,20 @@ def save_object(file_path,obj):
     except Exception as e:
         raise CustomException(e,sys)
     
-def evaluate_classification_models(X_train, y_train, X_test, y_test, models):
+def evaluate_classification_models(X_train, y_train, X_test, y_test, models,param):
     try:
         report = {}
 
         for i in range(len(list(models))):
             model_name = list(models.keys())[i]
             model = list(models.values())[i]
+            para=param[list(models.keys())[i]]
 
-            model.fit(X_train, y_train)
+            gs = GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train,y_train)
 
             yhat_train = model.predict(X_train)
             yhat_test = model.predict(X_test)

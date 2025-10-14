@@ -32,7 +32,7 @@ class ModelTrainer:
                 test_arr[:,-1]
             )
             models={
-                "Linear Regression":LogisticRegression(),
+                "Logistic Regression":LogisticRegression(),
                 "Random Forest":RandomForestClassifier(),
                 "Decision Tree":DecisionTreeClassifier(),
                 "Gradient Boosting":GradientBoostingClassifier(),
@@ -41,7 +41,61 @@ class ModelTrainer:
                 "AdaBoost Classifier":AdaBoostClassifier()
             }
 
-            model_report:dict = evaluate_classification_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+            params = {
+                "Logistic Regression": {
+                    'C': [0.1, 1, 10, 100],
+                    # 'solver': ['liblinear', 'lbfgs'],
+                    # 'penalty': ['l2', 'l1'],  # note: 'l1' only works with liblinear
+                    'max_iter': [100, 200, 500]
+                },
+
+                "Random Forest": {
+                    'n_estimators': [50, 100, 200],
+                    # 'criterion': ['gini', 'entropy', 'log_loss'],
+                    # 'max_depth': [None, 10, 20, 30],
+                    # 'min_samples_split': [2, 5, 10],
+                    # 'min_samples_leaf': [1, 2, 4],
+                    # 'bootstrap': [True, False]
+                },
+
+                "Decision Tree": {
+                    'criterion': ['gini', 'entropy', 'log_loss'],
+                    # 'splitter': ['best', 'random'],
+                    # 'max_depth': [None, 5, 10, 20],
+                    # 'min_samples_split': [2, 5, 10],
+                    # 'min_samples_leaf': [1, 2, 4]
+                },
+
+                "Gradient Boosting": {
+                    'learning_rate': [0.1, 0.05, 0.01],
+                    'n_estimators': [50, 100, 200],
+                    'subsample': [0.6, 0.8, 1.0],
+                    # 'max_depth': [3, 5, 7]
+                },
+
+                "XGB Classifier": {
+                    'learning_rate': [0.1, 0.05, 0.01],
+                    'n_estimators': [50, 100, 200],
+                    # 'max_depth': [3, 5, 7],
+                    # 'subsample': [0.6, 0.8, 1.0],
+                    # 'colsample_bytree': [0.6, 0.8, 1.0]
+                },
+
+                "CatBoosting Classifier": {
+                    'depth': [4, 6, 8, 10],
+                    'learning_rate': [0.01, 0.05, 0.1],
+                    'iterations': [50, 100, 200],
+                    # 'l2_leaf_reg': [1, 3, 5]
+                },
+
+                "AdaBoost Classifier": {
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.1, 0.5, 1.0]
+                }
+            }
+
+
+            model_report:dict = evaluate_classification_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models,param=params)
 
             f1_scores = {model: metrics["F1 Score"] for model, metrics in model_report.items()}
             best_model_name = max(f1_scores, key=f1_scores.get)
