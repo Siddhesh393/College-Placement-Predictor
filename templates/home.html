@@ -1,0 +1,144 @@
+<html>
+  <body>
+    <div class="login">
+      <h1>Student Performance & Placement Predictor</h1>
+
+      <form action="{{ url_for('predict_datapoint')}}" method="post">
+        <h2>
+          <legend>Enter Student Details</legend>
+        </h2>
+
+        <!-- IQ -->
+        <div class="mb-3">
+          <label class="form-label">IQ Level</label>
+          <input
+            class="form-control"
+            type="number"
+            name="iq"
+            placeholder="Enter your IQ (e.g., 110)"
+            min="50"
+            max="200"
+            required
+          />
+        </div>
+
+        <!-- Previous Semester Result -->
+        <div class="mb-3">
+          <label class="form-label">Previous Semester Result (%)</label>
+          <input
+            class="form-control"
+            type="number"
+            name="prev_sem_result"
+            placeholder="Enter previous semester percentage"
+            min="0"
+            max="100"
+            required
+          />
+        </div>
+
+        <!-- CGPA -->
+        <div class="mb-3">
+          <label class="form-label">Cumulative GPA (CGPA)</label>
+          <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="cgpa"
+            placeholder="Enter your CGPA (0 - 10)"
+            min="0"
+            max="10"
+            required
+          />
+        </div>
+
+        <!-- Academic Performance -->
+        <div class="mb-3">
+          <label class="form-label">Academic Performance (0–10)</label>
+        <input
+            class="form-control"
+            type="number"
+            name="academic_performance"
+            placeholder="Enter Academic Performance rating"
+            min="0"
+            max="10"
+            step="1"
+            required
+        />
+        </div>
+
+        <!-- Extra Curricular Score -->
+        <div class="mb-3">
+          <label class="form-label">Extra-Curricular Score (out of 10)</label>
+          <input
+            class="form-control"
+            type="number"
+            step="0.1"
+            name="extra_curricular_score"
+            placeholder="Enter score"
+            min="0"
+            max="10"
+            required
+          />
+        </div>
+
+        <!-- Communication Skills -->
+        <div class="mb-3">
+        <label class="form-label">Communication Skills (0–10)</label>
+        <input
+            class="form-control"
+            type="number"
+            name="communication_skills"
+            placeholder="Enter Communication Skill rating"
+            min="0"
+            max="10"
+            step="1"
+            required
+        />
+        </div>
+
+
+        <!-- Projects Completed -->
+        <div class="mb-3">
+          <label class="form-label">Number of Projects Completed</label>
+          <input
+            class="form-control"
+            type="number"
+            name="projects_completed"
+            placeholder="Enter number of projects"
+            min="0"
+            required
+          />
+        </div>
+
+        <!-- Internship Experience -->
+        <div class="mb-3">
+        <label class="form-label">Internship Experience</label>
+        <select
+            class="form-control"
+            name="internship_experience"
+            required
+        >
+            <option selected disabled value="">Do you have internship experience?</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+        </div>
+
+
+        <!-- Submit Button -->
+        <div class="mb-3">
+          <input
+            class="btn btn-primary"
+            type="submit"
+            value="Predict Placement"
+            required
+          />
+        </div>
+      </form>
+
+      <h2>
+        The prediction is: {{ results }}
+      </h2>
+    </div>
+  </body>
+</html>
